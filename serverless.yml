@@ -1,0 +1,25 @@
+service: injoy-click
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+functions:
+  getMemes:
+    handler: src/getMemes/getMemes.handler
+    events:
+     - http:
+         path: getMemes
+         method: get
+  getNews:
+    handler: src/getNews/getNews.handler
+    events:
+     - http:
+         path: getNews
+         method: get
+  getTweets:
+    handler: src/getTweets/getTweets.handler
+    events:
+     - http:
+         path: getTweets
+         method: get
