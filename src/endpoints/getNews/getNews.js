@@ -2,7 +2,9 @@
 
 var axios = require("axios");
 
-module.exports.handler = async event => {
+module.exports.handler = async (event, context, callback) => {
+
+  const { query, category } = event;
 
   const newsApiUrl = "https://newsapi.org/v2/";
   const newsApiToken = "ed62172b723f4a598514e9a0aec3d2ae";
@@ -33,21 +35,20 @@ module.exports.handler = async event => {
     }
   }
 
-  return new Promise((resolve, reject) => {
-    axios
-      .request({
-        url: url,
-        baseURL: newsApiUrl,
-        headers: newsApiHeaders,
-        params: params
-      })
-      .then(result => {
-        if (result.status === 200) {
-          resolve(result.data.articles);
-        }
-      })
-      .catch(error => {
-        reject(error);
-      });
+  const response = await axios.request({
+    url: url,
+    baseURL: newsApiUrl,
+    headers: newsApiHeaders,
+    params: params
+  })
+
+  return callback(null, {
+    statusCode: response.status,
+    headers: { 
+      'Content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+    body: JSON.stringify(response.status === 200 ? response.data.articles : response)
   });
 };

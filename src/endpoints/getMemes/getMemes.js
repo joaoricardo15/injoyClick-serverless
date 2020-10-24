@@ -1,40 +1,40 @@
 'use strict';
 
-var axios = require("axios");
+const axios = require("axios");
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 
-module.exports.handler = async event => {
+module.exports.handler = async (event, context, callback) => {
 
-  return new Promise(async (resolve, reject) => {
-    let [ahNegao, nIntendo, leNinja, humordido] = await Promise.all([
+    let [ahNegao, nIntendo, humordido] = await Promise.all([
       getAhNegao(),
       getNintendo(),
-      getLeNinja(),
+      // getLeNinja(),
       getHumordido(),
     ]);
+
     let biggestLenght = ahNegao.length;
     if (nIntendo.length > biggestLenght) biggestLenght = nIntendo.length;
-    if (leNinja.length > biggestLenght) biggestLenght = leNinja.length;
+    // if (leNinja.length > biggestLenght) biggestLenght = leNinja.length;
     if (humordido.length > biggestLenght) biggestLenght = humordido.length;
 
     let mixedPosts = [];
     for (let i = 0; i < biggestLenght; i++) {
       if (ahNegao[i]) mixedPosts.push(ahNegao[i]);
       if (nIntendo[i]) mixedPosts.push(nIntendo[i]);
-      if (leNinja[i]) mixedPosts.push(leNinja[i]);
+      // if (leNinja[i]) mixedPosts.push(leNinja[i]);
       if (humordido[i]) mixedPosts.push(humordido[i]);
     }
 
-    // let allPosts = [
-    //   ...ahNegao,
-    //   ...nIntendo,
-    //   ...leNinja,
-    //   ...humordido,
-    //   ...kibeLoco,
-    // ];
-    // const latestPosts = allPosts.sort((a, b) => b.date - a.date);
-
-    resolve(mixedPosts);
-  });
+    return callback(null, {
+      statusCode: 200,
+      headers: { 
+        'Content-type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
+      body: JSON.stringify(mixedPosts)
+    });
 }
 
 const getKibeLoco = () => {

@@ -1,25 +1,33 @@
 service: injoy-click
 
+plugins:
+  - serverless-offline
+
 provider:
   name: aws
   runtime: nodejs12.x
 
 functions:
   getMemes:
-    handler: src/getMemes/getMemes.handler
+    handler: src/endpoints/getMemes/getMemes.handler
     events:
      - http:
-         path: getMemes
+         path: memes
          method: get
+         cors: true
+         
   getNews:
-    handler: src/getNews/getNews.handler
+    handler: src/endpoints/getNews/getNews.handler
     events:
      - http:
-         path: getNews
-         method: get
+        path: news
+        method: get
+        cors: true
+
   getTweets:
-    handler: src/getTweets/getTweets.handler
+    handler: src/endpoints/getTweets/getTweets.handler
     events:
      - http:
-         path: getTweets
+         path: tweets
          method: get
+         cors: true

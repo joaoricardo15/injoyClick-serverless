@@ -1,12 +1,15 @@
 {
   "dependencies": {
-    "axios": "^0.21.0"
+    "axios": "^0.21.0",
+    "jsdom": "^16.4.0"
   },
   "name": "injoyclick-serverless",
   "version": "1.0.0",
   "description": "API for content",
   "main": "serverless.yml",
-  "devDependencies": {},
+  "devDependencies": {
+    "serverless-offline": "^6.8.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
